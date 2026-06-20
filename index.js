@@ -125,6 +125,13 @@ Host Details:
         }
 
         try {
+            console.log('Sending request:', JSON.stringify({
+                url: this.endpoint,
+                method: 'POST',
+                headers: headers,
+                body: { payload }
+            }, null, 2));
+
             const response = await fetch(this.endpoint, {
                 method: 'POST',
                 headers: headers,
