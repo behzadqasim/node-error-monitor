@@ -8,9 +8,22 @@
     "monitoring",
     "apm"
   ],
-  "author": "Behzad Qasim behzadqasim.dev@gmail.com",
-  "license": "ISC",
+  "author": "Behzad Qasim <behzadqasim.dev@gmail.com>",
+  "license": "MIT",
   "description": "Automated global error and host exception tracking SDK for Node.js applications.",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/behzadqasim/node-error-monitor.git"
+  },
+  "bugs": {
+    "url": "https://github.com/behzadqasim/node-error-monitor/issues"
+  },
+  "homepage": "https://github.com/behzadqasim/node-error-monitor#readme",
+  "files": [
+    "index.js",
+    "README.md",
+    "LICENSE"
+  ],
   "engines": {
     "node": ">=18.0.0"
   }
