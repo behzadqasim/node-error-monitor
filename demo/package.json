@@ -1,0 +1,10 @@
+{
+  "name": "node-error-monitor-demo",
+  "version": "1.0.0",
+  "description": "Demo application for testing node-error-monitor SDK.",
+  "main": "demo.js",
+  "scripts": {
+    "start": "node demo.js"
+  },
+  "dependencies": {}
+}
