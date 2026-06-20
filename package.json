@@ -1,6 +1,6 @@
 {
   "name": "node-error-monitor",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "main": "index.js",
   "keywords": [
     "error-tracking",
@@ -24,7 +24,14 @@
     "README.md",
     "LICENSE"
   ],
+  "scripts": {
+    "build": "javascript-obfuscator src/index.js --output index.js --compact true --control-flow-flattening true --dead-code-injection true --string-array true --string-array-encoding rc4 --self-defending false --target node",
+    "prepublishOnly": "npm run build"
+  },
   "engines": {
     "node": ">=18.0.0"
+  },
+  "devDependencies": {
+    "javascript-obfuscator": "^5.4.3"
   }
 }
