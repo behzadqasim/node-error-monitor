@@ -9,7 +9,7 @@ const monitor = new ErrorMonitor({
 
 monitor.init();
 
-console.log('🚀 Demo running. Triggering an unhandled promise rejection in 1 second...');
+console.log('Demo running. Triggering an unhandled promise rejection in 1 second...');
 
 // 2. Trigger an unhandled promise rejection
 setTimeout(() => {

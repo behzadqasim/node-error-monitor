@@ -19,7 +19,7 @@ class ErrorMonitor {
         this.environment = process.env.NODE_ENV || 'development';
 
         if (!this.workspaceKey || !this.projectKey) {
-            console.warn('⚠️ ErrorMonitor: Missing workspaceKey or projectKey. Errors will not be reported.');
+            console.warn('ErrorMonitor: Missing workspaceKey or projectKey. Errors will not be reported.');
         }
         this.logBuffer = [];
         this.maxLogLines = 50;
@@ -45,7 +45,7 @@ class ErrorMonitor {
             this.reportError(error, 'unhandledRejection');
         });
 
-        console.log(`✅ ErrorMonitor tracking "${this.projectName}" [${this.environment}]`);
+        console.log(`ErrorMonitor tracking "${this.projectName}" [${this.environment}]`);
     }
 
     setupConsoleInterceptor() {
@@ -176,13 +176,13 @@ Host Details:
             });
             if (!response.ok) {
                 const responseText = await response.text();
-                console.warn(`⚠️ ErrorMonitor: Failed to report error. Status: ${response.status}. Response: ${responseText}`);
+                console.warn(`ErrorMonitor: Failed to report error. Status: ${response.status}. Response: ${responseText}`);
             } else {
-                console.log('✅ ErrorMonitor: Error reported successfully');
+                console.log('ErrorMonitor: Error reported successfully');
             }
         } catch (sendError) {
             console.log(sendError);
-            console.error('❌ ErrorMonitor failed to report:', sendError.message);
+            console.error(' ErrorMonitor failed to report:', sendError.message);
         }
     }
 }
