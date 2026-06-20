@@ -2,8 +2,9 @@ const ErrorMonitor = require('../index.js'); // Use relative path for local test
 
 // 1. Initialize the SDK with your keys
 const monitor = new ErrorMonitor({
-    workspaceKey: 'demo-workspace-key',
-    projectKey: 'demo-project-key'
+    workspaceKey: 'd58ec0ddb5f74376ae3973cb4a59d808',
+    projectKey: 'B04F2CA9CF4049F0AF645A4396E73305',
+    token: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzZXNzaW9uSWQiOiIxNzYxRUUxQTU1Nzg0QTJCQkRFQjhGRUMwRDkwN0NDQyIsImlhdCI6MTc4MTk2MzQ4MSwiZXhwIjoxNzg0NTU1NDgxfQ.4oCgXwinXr1hHyl1hGB5X0C8PNBsIewaUg2Hv5lMKAk'
 });
 
 monitor.init();

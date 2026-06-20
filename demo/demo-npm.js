@@ -4,6 +4,7 @@ const ErrorMonitor = require('node-error-monitor');
 const monitor = new ErrorMonitor({
     workspaceKey: 'd58ec0ddb5f74376ae3973cb4a59d808',
     projectKey: 'B04F2CA9CF4049F0AF645A4396E73305'
+    
 });
 
 monitor.init();

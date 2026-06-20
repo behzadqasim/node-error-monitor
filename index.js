@@ -8,6 +8,7 @@ class ErrorMonitor {
     constructor(config = {}) {
         this.workspaceKey = config.workspaceKey;
         this.projectKey = config.projectKey;
+        this.token = config.token;
         this.endpoint = 'https://app-fusionsuite.localdevspace.link/local-gateway/browser-plugin-services/api/v1/sdk/submit-bug';
 
         // Automatically extract project details
@@ -19,6 +20,10 @@ class ErrorMonitor {
         if (!this.workspaceKey || !this.projectKey) {
             console.warn('⚠️ ErrorMonitor: Missing workspaceKey or projectKey. Errors will not be reported.');
         }
+    }
+
+    setToken(token) {
+        this.token = token;
     }
 
     init() {
@@ -114,12 +119,22 @@ Host Details:
             networkLogs: ""
         };
 
+        const headers = { 'Content-Type': 'application/json' };
+        if (this.token) {
+            headers['Authorization'] = `Bearer ${this.token}`;
+        }
+
         try {
-            await fetch(this.endpoint, {
+            const response = await fetch(this.endpoint, {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(payload)
+                headers: headers,
+                body: JSON.stringify({ 'payload': payload })
             });
+            if (!response.ok) {
+                console.warn(`⚠️ ErrorMonitor: Failed to report error. Status: ${response.status}`);
+            } else {
+                console.log('✅ ErrorMonitor: Error reported successfully');
+            }
         } catch (sendError) {
             console.error('❌ ErrorMonitor failed to report:', sendError.message);
         }
