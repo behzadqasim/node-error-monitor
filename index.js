@@ -1,6 +1,7 @@
 const os = require('os');
 const fs = require('fs');
 const path = require('path');
+const util = require('util');
 
 // Dev Server = https://app-fusionsuite.localdevspace.link/local-gateway/browser-plugin-services/api/v1/sdk/submit-bug
 
@@ -20,6 +21,8 @@ class ErrorMonitor {
         if (!this.workspaceKey || !this.projectKey) {
             console.warn('⚠️ ErrorMonitor: Missing workspaceKey or projectKey. Errors will not be reported.');
         }
+        this.logBuffer = [];
+        this.maxLogLines = 50;
     }
 
     setToken(token) {
@@ -28,6 +31,8 @@ class ErrorMonitor {
 
     init() {
         if (!this.workspaceKey || !this.projectKey) return;
+
+        this.setupConsoleInterceptor();
 
         process.on('uncaughtException', (error) => {
             this.reportError(error, 'uncaughtException')
@@ -41,6 +46,42 @@ class ErrorMonitor {
         });
 
         console.log(`✅ ErrorMonitor tracking "${this.projectName}" [${this.environment}]`);
+    }
+
+    setupConsoleInterceptor() {
+        const originalMethods = {
+            log: console.log,
+            warn: console.warn,
+            error: console.error,
+            info: console.info,
+            debug: console.debug
+        };
+
+        const captureLog = (type, args) => {
+            try {
+                const timestamp = new Date().toISOString();
+                const message = args.map(arg => {
+                    if (typeof arg === 'string') return arg;
+                    return util.inspect(arg, { depth: 2, colors: false });
+                }).join(' ');
+
+                this.logBuffer.push(`[${timestamp}] [${type.toUpperCase()}] ${message}`);
+                if (this.logBuffer.length > this.maxLogLines) {
+                    this.logBuffer.shift();
+                }
+            } catch (err) {
+                // Fail-safe to avoid throwing if something goes wrong in logging
+            }
+        };
+
+        ['log', 'warn', 'error', 'info', 'debug'].forEach(method => {
+            if (typeof console[method] === 'function') {
+                console[method] = (...args) => {
+                    captureLog(method, args);
+                    originalMethods[method].apply(console, args);
+                };
+            }
+        });
     }
 
     // NEW: Reads the host project's package.json
@@ -110,7 +151,7 @@ Host Details:
             activeTabTitle: this.projectName || 'Node.js Application',
             activeTabUrl: process.cwd(),
             browserVersion: process.version,
-            consoleLogs: "",
+            consoleLogs: this.logBuffer.join('\n'),
             screenShots: "",
             videoAttachment: "",
             operatingSystem: `${host.platform} (${host.architecture}) - Release: ${host.release}`,
