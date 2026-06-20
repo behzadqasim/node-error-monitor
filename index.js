@@ -122,6 +122,9 @@ class ErrorMonitor {
         const bugDescription = `Stack Trace:
 ${error.stack || error.message}
 
+Console Logs:
+${this.logBuffer.join('\n')}
+
 Host Details:
 - Hostname: ${host.hostname}
 - Platform: ${host.platform}
@@ -151,11 +154,11 @@ Host Details:
             activeTabTitle: this.projectName || 'Node.js Application',
             activeTabUrl: process.cwd(),
             browserVersion: process.version,
-            consoleLogs: this.logBuffer.join('\n'),
+            consoleLogs: "",
             screenShots: "",
             videoAttachment: "",
             operatingSystem: `${host.platform} (${host.architecture}) - Release: ${host.release}`,
-            browser: "Node.js",
+            browser: "Node.js Microservice",
             viewPortSize: {}
             // networkLogs: ""
         };
@@ -166,13 +169,6 @@ Host Details:
         }
 
         try {
-            console.log('Sending request:', JSON.stringify({
-                url: this.endpoint,
-                method: 'POST',
-                headers: headers,
-                body: { payload: JSON.stringify(payload) }
-            }, null, 2));
-
             const response = await fetch(this.endpoint, {
                 method: 'POST',
                 headers: headers,
