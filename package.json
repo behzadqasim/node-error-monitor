@@ -1,0 +1,17 @@
+{
+  "name": "node-error-monitor",
+  "version": "1.0.0",
+  "main": "index.js",
+  "keywords": [
+    "error-tracking",
+    "exception-handler",
+    "monitoring",
+    "apm"
+  ],
+  "author": "Behzad Qasim behzadqasim.dev@gmail.com",
+  "license": "ISC",
+  "description": "Automated global error and host exception tracking SDK for Node.js applications.",
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}
