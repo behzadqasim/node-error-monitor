@@ -72,21 +72,46 @@ class ErrorMonitor {
     }
 
     async reportError(error, type = 'manual') {
+        const host = this.getHostSpecs();
+        const bugDescription = `Stack Trace:
+${error.stack || error.message}
+
+Host Details:
+- Hostname: ${host.hostname}
+- Platform: ${host.platform}
+- Architecture: ${host.architecture}
+- Release: ${host.release}
+- Total Memory: ${host.totalMemory}
+- Free Memory: ${host.freeMemory}
+- CPU Count: ${host.cpuCount}
+- Uptime: ${host.uptime}
+- Node Version: ${host.nodeVersion}`;
+
         const payload = {
-            workspaceKey: this.workspaceKey,
-            projectKey: this.projectKey,
-            // Metadata fields added here:
-            projectName: this.projectName,
-            projectVersion: this.projectVersion,
-            environment: this.environment,
-            timestamp: new Date().toISOString(),
-            type: type,
-            error: {
-                name: error.name || 'Error',
-                message: error.message,
-                stack: error.stack
-            },
-            host: this.getHostSpecs()
+            workspace_kuid: this.workspaceKey,
+            project_kuid: this.projectKey,
+            assignee_kuid: "",
+            tag_kuid: "",
+            reporteeName: "Node.js SDK",
+            reporteeEmail: "sdk@node-error-monitor.com",
+            assignedTo: "",
+            bugTitle: `${error.name || 'Error'}: ${error.message || 'No message provided'}`,
+            bugDescription: bugDescription,
+            screenDensity: "",
+            screenResolution: "",
+            appPermissions: {},
+            suggestingAnImprovement: 0,
+            test_case_ids: [],
+            activeTabTitle: this.projectName || 'Node.js Application',
+            activeTabUrl: process.cwd(),
+            browserVersion: process.version,
+            consoleLogs: "",
+            screenShots: "",
+            videoAttachment: "",
+            operatingSystem: `${host.platform} (${host.architecture}) - Release: ${host.release}`,
+            browser: "Node.js",
+            viewPortSize: {},
+            networkLogs: ""
         };
 
         try {
