@@ -115,13 +115,13 @@ Host Details:
             videoAttachment: "",
             operatingSystem: `${host.platform} (${host.architecture}) - Release: ${host.release}`,
             browser: "Node.js",
-            viewPortSize: {},
-            networkLogs: ""
+            viewPortSize: {}
+            // networkLogs: ""
         };
 
         const headers = { 'Content-Type': 'application/json' };
         if (this.token) {
-            headers['Authorization'] = `Bearer ${this.token}`;
+            headers['Authorization'] = this.token;
         }
 
         try {
@@ -129,20 +129,22 @@ Host Details:
                 url: this.endpoint,
                 method: 'POST',
                 headers: headers,
-                body: { payload }
+                body: { payload: JSON.stringify(payload) }
             }, null, 2));
 
             const response = await fetch(this.endpoint, {
                 method: 'POST',
                 headers: headers,
-                body: JSON.stringify({ 'payload': payload })
+                body: JSON.stringify({ payload: JSON.stringify(payload) })
             });
             if (!response.ok) {
-                console.warn(`⚠️ ErrorMonitor: Failed to report error. Status: ${response.status}`);
+                const responseText = await response.text();
+                console.warn(`⚠️ ErrorMonitor: Failed to report error. Status: ${response.status}. Response: ${responseText}`);
             } else {
                 console.log('✅ ErrorMonitor: Error reported successfully');
             }
         } catch (sendError) {
+            console.log(sendError);
             console.error('❌ ErrorMonitor failed to report:', sendError.message);
         }
     }
